@@ -327,8 +327,13 @@ function App() {
           </div>
         </div>
         <nav className="header-nav" aria-label="Primary">
-          {NAV_LINKS.map((item) => (
-            <a key={item} href="#0" onClick={(event) => event.preventDefault()}>
+          {NAV_LINKS.map((item, index) => (
+            <a
+              key={item}
+              href="#0"
+              className={index === 0 ? 'active' : ''}
+              onClick={(event) => event.preventDefault()}
+            >
               {item}
             </a>
           ))}
@@ -361,7 +366,11 @@ function App() {
               <p className="wallet-display">{walletAddress || 'Wallet not connected'}</p>
               <div className="chat-log">
                 {chatMessages.map((message) => (
-                  <article key={message.id} className="chat-message">
+                  <article
+                    key={message.id}
+                    className="chat-message"
+                    data-user-initial={(message.user || 'a').slice(0, 1).toUpperCase()}
+                  >
                     <header>
                       <strong>{message.user || 'anon'}</strong>
                       <small>{message.timestamp ? new Date(message.timestamp).toLocaleTimeString() : '--:--'}</small>
@@ -489,53 +498,55 @@ function App() {
                 setDraggingStickerId(null)
               }}
             >
-              {Array.from({ length: TILE_COUNT }, (_, index) => index + 1).map((tile) => {
-                const tileStyle = personalization.tiles[tile]
-                const selected = selectedTiles.includes(tile)
-                const deployed = deployedTiles.includes(tile)
-                const winner = winnerTile === tile
-                const loser = roundEnded && !winner
-                const participantCount = deployed ? 1 : (tile + round) % 4
-                const odds = `${Math.max(4, 31 - tile)}%`
+              <div className="board-stage">
+                {Array.from({ length: TILE_COUNT }, (_, index) => index + 1).map((tile) => {
+                  const tileStyle = personalization.tiles[tile]
+                  const selected = selectedTiles.includes(tile)
+                  const deployed = deployedTiles.includes(tile)
+                  const winner = winnerTile === tile
+                  const loser = roundEnded && !winner
+                  const participantCount = deployed ? 1 : (tile + round) % 4
+                  const odds = `${Math.max(4, 31 - tile)}%`
 
-                return (
-                  <button
-                    key={tile}
-                    type="button"
-                    className={`board-tile shape-${tileStyle.shape} ${selected ? 'selected' : ''} ${deployed ? 'deployed' : ''} ${winner ? 'winner' : ''} ${loser ? 'loser' : ''}`}
-                    onMouseDown={() => {
-                      if (mode === 'edit') {
-                        setDraggingTileId(tile)
-                      }
-                    }}
-                    onClick={() => handleTileClick(tile)}
-                    style={{
-                      left: tileStyle.x,
-                      top: tileStyle.y,
-                      backgroundColor: tileStyle.color,
-                    }}
+                  return (
+                    <button
+                      key={tile}
+                      type="button"
+                      className={`board-tile shape-${tileStyle.shape} ${selected ? 'selected' : ''} ${deployed ? 'deployed' : ''} ${winner ? 'winner' : ''} ${loser ? 'loser' : ''}`}
+                      onMouseDown={() => {
+                        if (mode === 'edit') {
+                          setDraggingTileId(tile)
+                        }
+                      }}
+                      onClick={() => handleTileClick(tile)}
+                      style={{
+                        left: tileStyle.x,
+                        top: tileStyle.y,
+                        backgroundColor: tileStyle.color,
+                      }}
+                    >
+                      <small className="tile-id">#{tile}</small>
+                      <strong>{participantCount}</strong>
+                      <small className="tile-meta">{deployed ? 'deployed' : 'miners'} · {odds}</small>
+                      {deployed && <small className="sol-marker">◎ SOL</small>}
+                    </button>
+                  )
+                })}
+
+                {personalization.stickers.map((sticker: StickerItem) => (
+                  <div
+                    key={sticker.id}
+                    role="button"
+                    tabIndex={0}
+                    className="sticker"
+                    onMouseDown={() => mode === 'edit' && setDraggingStickerId(sticker.id)}
+                    onDoubleClick={() => mode === 'edit' && removeSticker(sticker.id)}
+                    style={{ left: sticker.x, top: sticker.y, fontSize: sticker.size }}
                   >
-                    <small className="tile-id">#{tile}</small>
-                    <strong>{participantCount}</strong>
-                    <small className="tile-meta">{deployed ? 'deployed' : 'miners'} · {odds}</small>
-                    {deployed && <small className="sol-marker">◎ SOL</small>}
-                  </button>
-                )
-              })}
-
-              {personalization.stickers.map((sticker: StickerItem) => (
-                <div
-                  key={sticker.id}
-                  role="button"
-                  tabIndex={0}
-                  className="sticker"
-                  onMouseDown={() => mode === 'edit' && setDraggingStickerId(sticker.id)}
-                  onDoubleClick={() => mode === 'edit' && removeSticker(sticker.id)}
-                  style={{ left: sticker.x, top: sticker.y, fontSize: sticker.size }}
-                >
-                  {sticker.symbol}
-                </div>
-              ))}
+                    {sticker.symbol}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -560,7 +571,7 @@ function App() {
             </article>
           </section>
 
-          <section className="panel">
+          <section className="panel deploy-panel">
             <p className="eyebrow">Deploy controls</p>
             <div className="segmented">
               <button type="button" className={deployMode === 'manual' ? 'active' : ''} onClick={() => setDeployMode('manual')}>
@@ -570,9 +581,17 @@ function App() {
                 Auto
               </button>
             </div>
-            <p>Selected blocks: {selectedTiles.join(', ') || 'none'}</p>
-            <p>Potential round output: {oreForecast.toFixed(1)} ORE</p>
-            <div className="controls-row">
+            <div className="deploy-metrics">
+              <p>
+                <span>Selected blocks</span>
+                <strong>{selectedTiles.join(', ') || 'none'}</strong>
+              </p>
+              <p>
+                <span>Potential round output</span>
+                <strong>{oreForecast.toFixed(1)} ORE</strong>
+              </p>
+            </div>
+            <div className="controls-row deploy-actions">
               <button type="button" onClick={handleDeploy} disabled={mode === 'edit' || roundEnded || selectedCount === 0}>
                 Deploy ({selectedCount})
               </button>
@@ -580,7 +599,9 @@ function App() {
                 Next round
               </button>
             </div>
-            <small>{deployMode === 'auto' ? 'Auto mode UI placeholder for parity.' : 'Manual deploy enabled.'}</small>
+            <small className="deploy-note">
+              {deployMode === 'auto' ? 'Auto mode UI placeholder for parity.' : 'Manual deploy enabled.'}
+            </small>
           </section>
 
           <section className="panel rewards-panel">
