@@ -18,8 +18,8 @@ export type RoundResult = {
 }
 
 const GRID_COLUMNS = 5
-const TILE_GAP = 86
-const START_OFFSET = 28
+const TILE_GAP = 72
+const START_OFFSET = 24
 
 export const defaultTileStyles = (): Record<number, TileStyle> => {
   const styles: Record<number, TileStyle> = {}
