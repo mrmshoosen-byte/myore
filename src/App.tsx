@@ -11,7 +11,6 @@ import {
   defaultPersonalization,
   loadPersonalization,
   savePersonalization,
-  type StickerItem,
 } from './lib/storage'
 
 type Mode = 'play' | 'edit'
@@ -203,7 +202,11 @@ function App() {
     }
 
     try {
-      const message = `myore-chat-auth:${Date.now()}`
+      const nonce =
+        typeof window !== 'undefined' && window.crypto?.randomUUID
+          ? window.crypto.randomUUID()
+          : `${Date.now()}-${Math.random()}`
+      const message = `ore-chat-auth:${Date.now()}:${nonce}`
       const signed = await provider.signMessage(new TextEncoder().encode(message), 'utf8')
       const response = await fetch('https://api.ore.supply/auth/login', {
         method: 'POST',
@@ -458,7 +461,7 @@ function App() {
               )
             })}
 
-            {personalization.stickers.map((sticker: StickerItem) => (
+            {personalization.stickers.map((sticker) => (
               <div
                 key={sticker.id}
                 role="button"
