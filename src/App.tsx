@@ -30,6 +30,7 @@ type PhantomProvider = {
 }
 
 const STICKER_OPTIONS = ['🌹', '💖', '⭐', '🔥', '✨', '🦋']
+const NAV_LINKS = ['Mining', 'Rounds', 'Rewards', 'Docs']
 
 const toBase64 = (value: Uint8Array) => btoa(String.fromCharCode(...value))
 
@@ -51,6 +52,7 @@ function App() {
   const [walletAddress, setWalletAddress] = useState('')
   const [chatToken, setChatToken] = useState('')
   const [chatStatus, setChatStatus] = useState('Disconnected')
+  const [deployMode, setDeployMode] = useState<'manual' | 'auto'>('manual')
 
   const activeTileStyle = personalization.tiles[editingTileId]
 
@@ -301,6 +303,12 @@ function App() {
   }
 
   const selectedCount = selectedTiles.length
+  const totalDeployed = deployedTiles.length
+  const formattedTimer = `${Math.floor(roundSecondsLeft / 60)
+    .toString()
+    .padStart(2, '0')}:${(roundSecondsLeft % 60).toString().padStart(2, '0')}`
+  const motherlodeEstimate = (1287 + round * 1.4).toFixed(1)
+  const oreForecast = selectedCount * 2.4
 
   return (
     <div
@@ -310,40 +318,91 @@ function App() {
         color: personalization.textColor,
       }}
     >
-      <header className="top-bar">
-        <div>
-          <h1>myore</h1>
-          <p className="subtitle">Unofficial, community-made ORE protocol client (open source).</p>
+      <header className="app-header">
+        <div className="brand">
+          <span className="brand-icon">◎</span>
+          <div>
+            <h1>myore</h1>
+            <p className="subtitle">Unofficial, community-made ORE protocol client.</p>
+          </div>
         </div>
-        <div className="mode-switch">
-          <button type="button" onClick={() => setMode('play')} className={mode === 'play' ? 'active' : ''}>
-            Play mode
-          </button>
-          <button type="button" onClick={() => setMode('edit')} className={mode === 'edit' ? 'active' : ''}>
-            Edit mode
+        <nav className="header-nav" aria-label="Primary">
+          {NAV_LINKS.map((item) => (
+            <a key={item} href="#0" onClick={(event) => event.preventDefault()}>
+              {item}
+            </a>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <p className="wallet-chip">{walletAddress ? `${walletAddress.slice(0, 4)}…${walletAddress.slice(-4)}` : 'Wallet disconnected'}</p>
+          <button type="button" onClick={connectWallet}>
+            Connect wallet
           </button>
         </div>
       </header>
 
       <main className="layout">
-        <section className="main-column">
-          <div className="status-panel">
-            <strong>{headerSummary}</strong>
-            <div className="controls-row">
-              <button type="button" onClick={handleDeploy} disabled={mode === 'edit' || roundEnded || selectedCount === 0}>
-                Deploy to selected ({selectedCount})
+        <aside className={`chat-rail ${chatCollapsed ? 'collapsed' : ''}`}>
+          <div className="chat-head">
+            <h3>Shared ORE Chat</h3>
+            <button type="button" onClick={() => setChatCollapsed((value) => !value)}>
+              {chatCollapsed ? 'Open' : 'Collapse'}
+            </button>
+          </div>
+
+          {!chatCollapsed && (
+            <>
+              <p className="chat-status">{chatStatus}</p>
+              <div className="chat-actions">
+                <button type="button" onClick={authenticateChat} disabled={!walletAddress}>
+                  Sign chat auth
+                </button>
+              </div>
+              <p className="wallet-display">{walletAddress || 'Wallet not connected'}</p>
+              <div className="chat-log">
+                {chatMessages.map((message) => (
+                  <article key={message.id} className="chat-message">
+                    <header>
+                      <strong>{message.user || 'anon'}</strong>
+                      <small>{message.timestamp ? new Date(message.timestamp).toLocaleTimeString() : '--:--'}</small>
+                    </header>
+                    <p>{message.message}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="chat-send">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(event) => setChatInput(event.target.value)}
+                  placeholder="Send message"
+                />
+                <button type="button" onClick={sendMessage}>
+                  Send
+                </button>
+              </div>
+            </>
+          )}
+        </aside>
+
+        <section className="board-column">
+          <div className="board-toolbar panel">
+            <div>
+              <p className="eyebrow">Round status</p>
+              <strong>{headerSummary}</strong>
+            </div>
+            <div className="mode-switch">
+              <button type="button" onClick={() => setMode('play')} className={mode === 'play' ? 'active' : ''}>
+                Play mode
               </button>
-              <button type="button" onClick={startNextRound}>
-                Start next round
+              <button type="button" onClick={() => setMode('edit')} className={mode === 'edit' ? 'active' : ''}>
+                Edit mode
               </button>
             </div>
-            <p>
-              In play mode, select numbered tiles and deploy. In edit mode, drag each tile and stickers without triggering mining actions.
-            </p>
           </div>
 
           {mode === 'edit' && (
-            <div className="edit-panel">
+            <div className="edit-panel panel">
               <h2>Edit board appearance</h2>
               <label>
                 Editing tile
@@ -416,134 +475,139 @@ function App() {
             </div>
           )}
 
-          <div
-            className="board-canvas"
-            onMouseMove={onCanvasMouseMove}
-            onMouseUp={() => {
-              setDraggingTileId(null)
-              setDraggingStickerId(null)
-            }}
-            onMouseLeave={() => {
-              setDraggingTileId(null)
-              setDraggingStickerId(null)
-            }}
-          >
-            {Array.from({ length: TILE_COUNT }, (_, index) => index + 1).map((tile) => {
-              const tileStyle = personalization.tiles[tile]
-              const selected = selectedTiles.includes(tile)
-              const deployed = deployedTiles.includes(tile)
-              const winner = winnerTile === tile
-              const loser = roundEnded && !winner
+          <div className="board-shell panel">
+            <p className="eyebrow">Mining board</p>
+            <div
+              className={`board-canvas ${mode === 'play' ? 'play-mode' : ''}`}
+              onMouseMove={onCanvasMouseMove}
+              onMouseUp={() => {
+                setDraggingTileId(null)
+                setDraggingStickerId(null)
+              }}
+              onMouseLeave={() => {
+                setDraggingTileId(null)
+                setDraggingStickerId(null)
+              }}
+            >
+              {Array.from({ length: TILE_COUNT }, (_, index) => index + 1).map((tile) => {
+                const tileStyle = personalization.tiles[tile]
+                const selected = selectedTiles.includes(tile)
+                const deployed = deployedTiles.includes(tile)
+                const winner = winnerTile === tile
+                const loser = roundEnded && !winner
+                const participantCount = deployed ? 1 : (tile + round) % 4
+                const odds = `${Math.max(4, 31 - tile)}%`
 
-              return (
-                <button
-                  key={tile}
-                  type="button"
-                  className={`board-tile shape-${tileStyle.shape} ${selected ? 'selected' : ''} ${deployed ? 'deployed' : ''} ${winner ? 'winner' : ''} ${loser ? 'loser' : ''}`}
-                  onMouseDown={() => {
-                    if (mode === 'edit') {
-                      setDraggingTileId(tile)
-                    }
-                  }}
-                  onClick={() => handleTileClick(tile)}
-                  style={{
-                    left: tileStyle.x,
-                    top: tileStyle.y,
-                    backgroundColor: tileStyle.color,
-                  }}
+                return (
+                  <button
+                    key={tile}
+                    type="button"
+                    className={`board-tile shape-${tileStyle.shape} ${selected ? 'selected' : ''} ${deployed ? 'deployed' : ''} ${winner ? 'winner' : ''} ${loser ? 'loser' : ''}`}
+                    onMouseDown={() => {
+                      if (mode === 'edit') {
+                        setDraggingTileId(tile)
+                      }
+                    }}
+                    onClick={() => handleTileClick(tile)}
+                    style={{
+                      left: tileStyle.x,
+                      top: tileStyle.y,
+                      backgroundColor: tileStyle.color,
+                    }}
+                  >
+                    <small className="tile-id">#{tile}</small>
+                    <strong>{participantCount}</strong>
+                    <small className="tile-meta">{deployed ? 'deployed' : 'miners'} · {odds}</small>
+                    {deployed && <small className="sol-marker">◎ SOL</small>}
+                  </button>
+                )
+              })}
+
+              {personalization.stickers.map((sticker: StickerItem) => (
+                <div
+                  key={sticker.id}
+                  role="button"
+                  tabIndex={0}
+                  className="sticker"
+                  onMouseDown={() => mode === 'edit' && setDraggingStickerId(sticker.id)}
+                  onDoubleClick={() => mode === 'edit' && removeSticker(sticker.id)}
+                  style={{ left: sticker.x, top: sticker.y, fontSize: sticker.size }}
                 >
-                  <span>{tile}</span>
-                  {deployed && <small className="sol-marker">◎ SOL</small>}
-                </button>
-              )
-            })}
-
-            {personalization.stickers.map((sticker: StickerItem) => (
-              <div
-                key={sticker.id}
-                role="button"
-                tabIndex={0}
-                className="sticker"
-                onMouseDown={() => mode === 'edit' && setDraggingStickerId(sticker.id)}
-                onDoubleClick={() => mode === 'edit' && removeSticker(sticker.id)}
-                style={{ left: sticker.x, top: sticker.y, fontSize: sticker.size }}
-              >
-                {sticker.symbol}
-              </div>
-            ))}
+                  {sticker.symbol}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <aside className="side-column">
-          <section className="panel">
-            <h3>Round info</h3>
-            <p>Selected: {selectedTiles.join(', ') || 'none'}</p>
-            <p>Deployed: {deployedTiles.join(', ') || 'none'}</p>
-            <p>Winner: {winnerTile ?? 'pending'}</p>
+        <aside className="control-column">
+          <section className="panel stats-grid">
+            <article>
+              <p>Motherlode</p>
+              <strong>{motherlodeEstimate} ORE</strong>
+            </article>
+            <article>
+              <p>Timer remaining</p>
+              <strong>{formattedTimer}</strong>
+            </article>
+            <article>
+              <p>Total deployed</p>
+              <strong>{totalDeployed}</strong>
+            </article>
+            <article>
+              <p>You deployed</p>
+              <strong>{deployedTiles.join(', ') || '0'}</strong>
+            </article>
           </section>
 
           <section className="panel">
-            <h3>Results & ORE distribution</h3>
+            <p className="eyebrow">Deploy controls</p>
+            <div className="segmented">
+              <button type="button" className={deployMode === 'manual' ? 'active' : ''} onClick={() => setDeployMode('manual')}>
+                Manual
+              </button>
+              <button type="button" className={deployMode === 'auto' ? 'active' : ''} onClick={() => setDeployMode('auto')}>
+                Auto
+              </button>
+            </div>
+            <p>Selected blocks: {selectedTiles.join(', ') || 'none'}</p>
+            <p>Potential round output: {oreForecast.toFixed(1)} ORE</p>
+            <div className="controls-row">
+              <button type="button" onClick={handleDeploy} disabled={mode === 'edit' || roundEnded || selectedCount === 0}>
+                Deploy ({selectedCount})
+              </button>
+              <button type="button" onClick={startNextRound}>
+                Next round
+              </button>
+            </div>
+            <small>{deployMode === 'auto' ? 'Auto mode UI placeholder for parity.' : 'Manual deploy enabled.'}</small>
+          </section>
+
+          <section className="panel rewards-panel">
+            <h3>Rewards & claims</h3>
             <ul>
               {roundResults.map((result) => (
                 <li key={result.round}>
-                  Round {result.round}: tile {result.winnerTile} · ORE {result.oreDistributed} · winners{' '}
-                  {result.winnerCount}
+                  <strong>R{result.round}</strong>
+                  <span>Tile {result.winnerTile}</span>
+                  <span>ORE {result.oreDistributed}</span>
+                  <span>Winners {result.winnerCount}</span>
                 </li>
               ))}
-              {roundResults.length === 0 && <li>No rounds settled yet.</li>}
+              {roundResults.length === 0 && <li className="empty">No rounds settled yet.</li>}
             </ul>
+            <button type="button" disabled={roundResults.length === 0}>
+              Claim rewards
+            </button>
           </section>
 
-          <section className="panel donation">
+          <section className="panel donation-card">
             <h3>Support this community client</h3>
-            <p>Donations are separate from mining/protocol actions.</p>
+            <p>Donations stay separate from mining and protocol actions.</p>
             <a href="https://github.com/sponsors/mrmshoosen-byte" target="_blank" rel="noreferrer">
               Donate to @mrmshoosen-byte
             </a>
           </section>
-        </aside>
-
-        <aside className={`chat-column ${chatCollapsed ? 'collapsed' : ''}`}>
-          <div className="chat-head">
-            <h3>Shared ORE Chat</h3>
-            <button type="button" onClick={() => setChatCollapsed((value) => !value)}>
-              {chatCollapsed ? 'Open chat' : 'Collapse'}
-            </button>
-          </div>
-
-          {!chatCollapsed && (
-            <>
-              <p className="chat-status">{chatStatus}</p>
-              <div className="chat-actions">
-                <button type="button" onClick={connectWallet}>
-                  Connect wallet
-                </button>
-                <button type="button" onClick={authenticateChat} disabled={!walletAddress}>
-                  Sign chat auth
-                </button>
-              </div>
-              <p className="wallet-display">{walletAddress || 'Wallet not connected'}</p>
-              <div className="chat-log">
-                {chatMessages.map((message) => (
-                  <p key={message.id}>
-                    <strong>{message.user || 'anon'}:</strong> {message.message}
-                  </p>
-                ))}
-              </div>
-              <div className="chat-send">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(event) => setChatInput(event.target.value)}
-                  placeholder="Send message"
-                />
-                <button type="button" onClick={sendMessage}>
-                  Send
-                </button>
-              </div>
-            </>
-          )}
         </aside>
       </main>
     </div>

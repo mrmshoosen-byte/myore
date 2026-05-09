@@ -6,6 +6,7 @@
 
 - 25 stable numbered mining tiles (1-25) with play-mode select + deploy flow
 - Clear selected/deployed/winner/loser visual overlays
+- Ore.supply-inspired dense app shell: top nav, left shared chat rail, compact board center, right control panel
 - Side panels for round info, winner history, and ORE distribution summary
 - Edit mode (fully separated from play mode) with per-tile drag/reposition, shape (square / rounded / circle), per-tile color, background color, text color, decorative stickers, reset, and browser-local persistence
 - Shared ORE chat shell using the documented public API pattern:
