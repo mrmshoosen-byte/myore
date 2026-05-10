@@ -38,6 +38,7 @@ function App() {
           tile,
           participants: 16 + ((tile * 7) % 28),
           state: tile % 3 === 0 ? 'LIVE' : tile % 2 === 0 ? 'WAIT' : 'OPEN',
+          value: (0.2 + ((tile * 17) % 60) / 100).toFixed(2),
         }
       }),
     [],
@@ -146,9 +147,12 @@ function App() {
                     className={`tile ${selected ? 'selected' : ''}`}
                     onClick={() => toggleTile(item.tile)}
                   >
-                    <span className="tile-id">#{item.tile}</span>
-                    <span className="tile-top-right">{item.participants}</span>
-                    <span className="tile-footer">{selected ? 'You' : item.state}</span>
+                    <span className="tile-id">{item.tile}</span>
+                    <span className="tile-top-right">
+                      <span aria-hidden="true">◎</span>
+                      {item.participants}
+                    </span>
+                    <span className="tile-footer">{selected ? 'Selected' : `${item.value} ORE`}</span>
                   </button>
                 )
               })}
@@ -214,6 +218,16 @@ function App() {
             <button type="button" className="deploy-button">
               Deploy
             </button>
+
+            <section className="claim-panel" aria-label="Rewards">
+              <div className="summary-row claim-row">
+                <span>Round rewards</span>
+                <strong>0.000 ORE</strong>
+              </div>
+              <button type="button" className="claim-button">
+                Claim rewards
+              </button>
+            </section>
           </section>
         </aside>
       </div>

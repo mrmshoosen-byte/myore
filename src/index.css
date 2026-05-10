@@ -5,16 +5,16 @@
 :root {
   color-scheme: dark;
   --bg-page: #0f0e11;
-  --bg-elevated: #131216;
-  --bg-floating: #1a191f;
-  --bg-floating-hover: #1e1d23;
+  --bg-elevated: #111015;
+  --bg-floating: #15141a;
+  --bg-floating-hover: #1a1920;
   --bg-secondary-control: #26242d;
   --bg-tertiary-control: #1d1c22;
   --bg-disabled: #18171c;
   --text-high: #fafafa;
   --text-mid: #dddfe0;
-  --text-muted: #707070;
-  --border-soft: #2a2930;
+  --text-muted: #7f7f8b;
+  --border-soft: #25242b;
   --gold: #ecc771;
   --green: #49b759;
 }
@@ -43,58 +43,57 @@ input {
   position: sticky;
   top: 0;
   z-index: 20;
-  height: 64px;
+  height: 58px;
   border-bottom: 1px solid var(--border-soft);
   background: var(--bg-page);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  gap: 12px;
+  padding: 0 14px;
+  gap: 8px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
   min-width: 0;
 }
 
 .brand-mark {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
 }
 
 .brand-dot {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: var(--bg-floating);
-  border: 1px solid #34323c;
+  border: 1px solid #2e2d36;
   color: var(--gold);
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .brand-text {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .desktop-nav {
   display: none;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .desktop-nav a {
   text-decoration: none;
-  color: var(--text-mid);
-  font-size: 14px;
+  color: #bec0c7;
+  font-size: 13px;
   transition: color 0.15s ease;
 }
 
@@ -105,22 +104,25 @@ input {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .price-pill {
-  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 9px;
   border-radius: 999px;
   border: 1px solid #313038;
   background: var(--bg-floating);
   color: var(--text-mid);
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
 .social-pill {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
   border: 1px solid #313038;
   background: var(--bg-floating);
@@ -139,8 +141,9 @@ input {
   border-radius: 999px;
   background: #ffffff;
   color: #101014;
-  height: 36px;
-  padding: 0 16px;
+  height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -152,35 +155,35 @@ input {
 .ore-content {
   flex: 1;
   width: 100%;
-  max-width: 1680px;
+  max-width: 1640px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 12px;
   display: grid;
-  grid-template-columns: 288px minmax(0, 1fr) 336px;
-  gap: 16px;
+  grid-template-columns: 272px minmax(0, 1fr) 320px;
+  gap: 12px;
 }
 
 .chat-rail,
 .board-panel,
 .stat-card,
 .deploy-panel {
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid var(--border-soft);
   background: var(--bg-elevated);
 }
 
 .chat-rail {
   position: sticky;
-  top: 80px;
+  top: 70px;
   align-self: start;
-  height: calc(100vh - 96px);
+  height: calc(100vh - 82px);
   display: flex;
   flex-direction: column;
   border-right-color: #2f2d36;
 }
 
 .chat-rail-header {
-  padding: 12px;
+  padding: 9px 10px;
   border-bottom: 1px solid var(--border-soft);
   display: flex;
   align-items: center;
@@ -189,39 +192,39 @@ input {
 
 .chat-rail-header h2 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 }
 
 .chat-live {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--green);
 }
 
 .chat-messages {
   flex: 1;
   overflow: auto;
-  padding: 12px;
+  padding: 8px;
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .chat-row {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 8px;
 }
 
 .chat-avatar {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: 999px;
-  background: var(--bg-floating);
-  border: 1px solid #36343e;
+  background: #191820;
+  border: 1px solid #30303a;
   color: var(--text-mid);
   display: grid;
   place-items: center;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
 }
 
@@ -230,33 +233,33 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .chat-meta strong {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-mid);
   font-weight: 600;
 }
 
 .chat-meta span {
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .chat-copy p {
   margin: 0;
   color: #b5b5b8;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.25;
 }
 
 .chat-composer {
   border-top: 1px solid var(--border-soft);
-  padding: 12px;
+  padding: 8px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 8px;
+  gap: 6px;
 }
 
 .chat-composer input,
@@ -264,9 +267,9 @@ input {
   border: 1px solid #32313a;
   background: var(--bg-tertiary-control);
   color: var(--text-high);
-  border-radius: 999px;
-  height: 38px;
-  padding: 0 14px;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 10px;
   outline: none;
 }
 
@@ -280,44 +283,46 @@ input {
 }
 
 .chat-composer button {
-  border-radius: 999px;
-  padding: 0 14px;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
 }
 
 .board-column {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .stat-card {
-  padding: 14px;
+  padding: 9px 10px;
 }
 
 .stat-card p {
   margin: 0;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .stat-card strong {
   display: block;
-  margin-top: 6px;
-  font-size: 20px;
+  margin-top: 4px;
+  font-size: 17px;
   color: var(--text-high);
   font-weight: 600;
 }
 
 .motherlode-card {
-  border: 2px solid var(--gold);
-  box-shadow: 0 0 0 1px rgba(236, 199, 113, 0.24), 0 10px 30px rgba(236, 199, 113, 0.1);
+  border-color: #8d7547;
+  box-shadow: inset 0 0 0 1px rgba(236, 199, 113, 0.2);
 }
 
 .motherlode-card strong {
@@ -325,42 +330,46 @@ input {
 }
 
 .board-panel {
-  padding: 14px;
+  padding: 10px;
 }
 
 .tile-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  gap: 7px;
 }
 
 .tile {
-  border: 1px solid #2f2d36;
+  border: 1px solid #2b2a32;
   background: var(--bg-floating);
-  border-radius: 6px;
+  border-radius: 3px;
   aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto 1fr auto;
   text-align: left;
-  padding: 10px;
+  padding: 7px;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .tile:hover {
   background: var(--bg-floating-hover);
-  border-color: #56525f;
+  border-color: #45424e;
 }
 
 .tile-id {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
+  font-weight: 600;
 }
 
 .tile-top-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   justify-self: end;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-mid);
 }
 
@@ -368,12 +377,12 @@ input {
   align-self: end;
   justify-self: end;
   font-size: 11px;
-  color: var(--text-muted);
+  color: #d8d8dd;
 }
 
 .tile.selected {
-  border-color: var(--gold);
-  background: #232126;
+  border-color: #7f6a41;
+  background: #1d1b20;
 }
 
 .tile.selected .tile-footer {
@@ -386,25 +395,25 @@ input {
 
 .deploy-panel {
   position: sticky;
-  top: 80px;
-  padding: 14px;
+  top: 70px;
+  padding: 10px;
   display: grid;
-  gap: 12px;
+  gap: 9px;
 }
 
 .segmented-toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid #32313a;
-  border-radius: 999px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .segmented-toggle button {
   border: 0;
   background: transparent;
-  height: 36px;
-  font-size: 13px;
+  height: 30px;
+  font-size: 12px;
 }
 
 .segmented-toggle button.active {
@@ -418,7 +427,7 @@ input {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .balance-row span,
@@ -436,13 +445,13 @@ input {
 .quick-buttons {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
 }
 
 .quick-buttons button {
-  border-radius: 999px;
-  height: 34px;
-  font-size: 13px;
+  border-radius: 6px;
+  height: 30px;
+  font-size: 12px;
 }
 
 .quick-buttons button:hover,
@@ -453,23 +462,24 @@ input {
 
 .amount-input {
   display: grid;
-  gap: 8px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 11px;
 }
 
 .amount-input input {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
-  height: 50px;
+  height: 40px;
+  text-align: right;
 }
 
 .deploy-button {
   border: 0;
-  border-radius: 999px;
-  height: 44px;
+  border-radius: 6px;
+  height: 38px;
   background: #ffffff;
   color: #111015;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -478,15 +488,36 @@ input {
   background: #ececec;
 }
 
+.claim-panel {
+  border-top: 1px solid var(--border-soft);
+  padding-top: 9px;
+  display: grid;
+  gap: 7px;
+}
+
+.claim-button {
+  border: 1px solid #32313a;
+  border-radius: 6px;
+  height: 34px;
+  background: transparent;
+  color: var(--text-mid);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.claim-button:hover {
+  background: #1f1d25;
+}
+
 .ore-footer {
-  height: 56px;
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 26px;
+  gap: 18px;
   border-top: 1px solid var(--border-soft);
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .ore-footer a {
@@ -500,8 +531,8 @@ input {
 
 @media (min-width: 768px) {
   .ore-header {
-    height: 80px;
-    padding: 0 20px;
+    height: 64px;
+    padding: 0 18px;
   }
 }
 
@@ -513,7 +544,7 @@ input {
 
 @media (min-width: 1536px) {
   .ore-content {
-    grid-template-columns: 352px minmax(0, 1fr) 336px;
+    grid-template-columns: 320px minmax(0, 1fr) 320px;
   }
 }
 
