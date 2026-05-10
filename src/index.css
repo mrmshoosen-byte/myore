@@ -17,6 +17,12 @@
   --border-soft: #25242b;
   --gold: #ecc771;
   --green: #49b759;
+
+  /* Layout tokens — single source of truth for column math */
+  --chat-w: 272px;
+  --right-w: 320px;
+  --shell-max: 1800px;
+  --gutter: 12px;
 }
 
 body {
@@ -155,14 +161,16 @@ input {
 .ore-content {
   flex: 1;
   width: 100%;
-  max-width: 1700px;
-  margin: 0 auto 0 0;
-  padding: 12px 12px 12px 6px;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding: var(--gutter);
   display: grid;
-  grid-template-columns: 272px minmax(0, 1fr) 320px;
-  gap: 12px;
+  grid-template-columns: var(--chat-w) minmax(0, 1fr) var(--right-w);
+  gap: var(--gutter);
 }
 
+/* Shared card base — minimal foundation; per-section classes add specifics */
+.card-base,
 .chat-rail,
 .board-panel,
 .stat-card,
@@ -291,8 +299,6 @@ input {
 
 .board-column {
   min-width: 0;
-  width: min(100%, 560px);
-  justify-self: start;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -404,7 +410,6 @@ input {
   padding: 11px;
   display: grid;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .segmented-toggle {
@@ -516,6 +521,48 @@ input {
   background: #ececec;
 }
 
+/* Rewards / claim panel */
+.rewards-panel {
+  padding: 11px;
+  display: grid;
+  gap: 8px;
+}
+
+.rewards-panel-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.rewards-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.rewards-label {
+  color: var(--text-muted);
+}
+
+.rewards-amount {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.claim-button {
+  border: 1px solid #32313a;
+  border-radius: 6px;
+  height: 34px;
+  background: var(--bg-secondary-control);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .ore-footer {
   height: 48px;
   display: flex;
@@ -550,14 +597,14 @@ input {
 }
 
 @media (min-width: 1536px) {
-  .ore-content {
-    grid-template-columns: 320px minmax(0, 1fr) 320px;
+  :root {
+    --chat-w: 320px;
   }
 }
 
 @media (max-width: 1260px) {
   .ore-content {
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) var(--right-w);
   }
 
   .chat-rail {
@@ -578,7 +625,6 @@ input {
 
   .deploy-panel {
     position: static;
-    margin-top: 0;
   }
 }
 
@@ -589,8 +635,8 @@ input {
   }
 
   .ore-content {
-    padding: 12px;
-    gap: 12px;
+    padding: var(--gutter);
+    gap: var(--gutter);
   }
 
   .deploy-stats {
