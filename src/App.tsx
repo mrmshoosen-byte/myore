@@ -117,25 +117,6 @@ function App() {
         </aside>
 
         <main className="board-column">
-          <section className="stats-row" aria-label="Round stats">
-            <article className="stat-card motherlode-card">
-              <p>Motherlode</p>
-              <strong>1,291.8 ORE</strong>
-            </article>
-            <article className="stat-card">
-              <p>Time remaining</p>
-              <strong>02:17</strong>
-            </article>
-            <article className="stat-card">
-              <p>Total deployed</p>
-              <strong>12,834.2 SOL</strong>
-            </article>
-            <article className="stat-card">
-              <p>You deployed</p>
-              <strong>{selectedTiles.length.toString().padStart(2, '0')} blocks</strong>
-            </article>
-          </section>
-
           <section className="board-panel" aria-label="Deployment board">
             <div className="tile-grid">
               {tileData.map((item) => {
@@ -161,6 +142,25 @@ function App() {
         </main>
 
         <aside className="deploy-column" aria-label="Deploy controls">
+          <section className="deploy-stats" aria-label="Round stats">
+            <article className="stat-card motherlode-card">
+              <p>Motherlode</p>
+              <strong>1,291.8 ORE</strong>
+            </article>
+            <article className="stat-card">
+              <p>Time remaining</p>
+              <strong>02:17</strong>
+            </article>
+            <article className="stat-card">
+              <p>Total deployed</p>
+              <strong>12,834.2 SOL</strong>
+            </article>
+            <article className="stat-card">
+              <p>You deployed</p>
+              <strong>{selectedTiles.length.toString().padStart(2, '0')} blocks</strong>
+            </article>
+          </section>
+
           <section className="deploy-panel">
             <div className="segmented-toggle" role="tablist" aria-label="Deploy mode">
               <button
