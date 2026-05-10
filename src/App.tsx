@@ -52,6 +52,8 @@ function App() {
 
   const numericAmount = Number(amount) || 0
   const totalAmount = (selectedTiles.length * numericAmount).toFixed(2)
+  const allTileIds = tileData.map((item) => item.tile)
+  const allSelected = selectedTiles.length === allTileIds.length
 
   return (
     <div className="ore-page">
@@ -206,8 +208,15 @@ function App() {
               />
             </label>
 
-            <div className="summary-row">
+            <div className="summary-row blocks-row">
               <span>Blocks</span>
+              <button
+                type="button"
+                className="all-button"
+                onClick={() => setSelectedTiles(allSelected ? [] : allTileIds)}
+              >
+                All
+              </button>
               <strong>{selectedTiles.length}</strong>
             </div>
             <div className="summary-row">
@@ -218,16 +227,6 @@ function App() {
             <button type="button" className="deploy-button">
               Deploy
             </button>
-
-            <section className="claim-panel" aria-label="Rewards">
-              <div className="summary-row claim-row">
-                <span>Round rewards</span>
-                <strong>0.000 ORE</strong>
-              </div>
-              <button type="button" className="claim-button">
-                Claim rewards
-              </button>
-            </section>
           </section>
         </aside>
       </div>
