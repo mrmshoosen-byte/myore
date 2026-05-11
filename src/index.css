@@ -19,10 +19,11 @@
   --green: #49b759;
 
   /* Layout tokens — single source of truth for column math */
-  --chat-w: 272px;
-  --right-w: 320px;
-  --shell-max: 1800px;
-  --gutter: 12px;
+  --header-h: 80px;
+  --chat-w: 288px;
+  --board-w: 540px;
+  --right-w: 332px;
+  --gutter: 14px;
 }
 
 body {
@@ -49,57 +50,58 @@ input {
   position: sticky;
   top: 0;
   z-index: 20;
-  height: 58px;
+  height: var(--header-h);
   border-bottom: 1px solid var(--border-soft);
   background: var(--bg-page);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  gap: 8px;
+  padding: 0 18px;
+  gap: 16px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 26px;
   min-width: 0;
 }
 
 .brand-mark {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   text-decoration: none;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
 }
 
 .brand-dot {
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
   display: grid;
   place-items: center;
   border: 1px solid #2e2d36;
   color: var(--gold);
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .brand-text {
-  font-size: 16px;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .desktop-nav {
   display: none;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
 }
 
 .desktop-nav a {
   text-decoration: none;
   color: #bec0c7;
-  font-size: 14px;
+  font-size: 15px;
   transition: color 0.15s ease;
 }
 
@@ -110,25 +112,25 @@ input {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .price-pill {
   display: inline-flex;
   align-items: center;
-  height: 28px;
-  padding: 0 9px;
+  height: 32px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid #313038;
   background: var(--bg-floating);
   color: var(--text-mid);
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
 .social-pill {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   border: 1px solid #313038;
   background: var(--bg-floating);
@@ -147,9 +149,9 @@ input {
   border-radius: 999px;
   background: #ffffff;
   color: #101014;
-  height: 32px;
-  padding: 0 14px;
-  font-size: 13px;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -159,13 +161,12 @@ input {
 }
 
 .ore-content {
-  flex: 1;
+  min-height: calc(100vh - var(--header-h));
   width: 100%;
-  max-width: var(--shell-max);
-  margin: 0 auto;
-  padding: var(--gutter);
+  padding: 0 0 96px;
   display: grid;
-  grid-template-columns: var(--chat-w) minmax(0, 1fr) var(--right-w);
+  grid-template-columns: var(--chat-w) var(--board-w) var(--right-w);
+  justify-content: start;
   gap: var(--gutter);
 }
 
@@ -182,17 +183,20 @@ input {
 
 .chat-rail {
   position: sticky;
-  top: 70px;
+  top: var(--header-h);
   align-self: start;
-  height: calc(100vh - 82px);
+  height: calc(100vh - var(--header-h));
   display: flex;
   flex-direction: column;
-  border-right-color: #2f2d36;
+  border: 0;
+  border-right: 1px solid #2f2d36;
+  border-radius: 0;
+  background: transparent;
 }
 
 .chat-rail-header {
-  padding: 9px 10px;
-  border-bottom: 1px solid var(--border-soft);
+  padding: 7px 12px;
+  border-bottom: 1px solid #222129;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -200,39 +204,39 @@ input {
 
 .chat-rail-header h2 {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .chat-live {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--green);
 }
 
 .chat-messages {
   flex: 1;
   overflow: auto;
-  padding: 8px;
+  padding: 8px 10px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .chat-row {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
-  gap: 8px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 6px;
 }
 
 .chat-avatar {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   background: #191820;
   border: 1px solid #30303a;
   color: var(--text-mid);
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
 }
 
@@ -241,30 +245,31 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 1px;
+  margin-bottom: 0;
 }
 
 .chat-meta strong {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-mid);
   font-weight: 600;
 }
 
 .chat-meta span {
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .chat-copy p {
   margin: 0;
   color: #b5b5b8;
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 .chat-composer {
-  border-top: 1px solid var(--border-soft);
-  padding: 8px;
+  margin-top: auto;
+  border-top: 1px solid #222129;
+  padding: 8px 10px 10px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 6px;
@@ -301,7 +306,8 @@ input {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  padding-top: 14px;
 }
 
 .deploy-stats {
@@ -338,13 +344,14 @@ input {
 }
 
 .board-panel {
-  padding: 8px;
+  padding: 6px;
+  max-width: var(--board-w);
 }
 
 .tile-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 5px;
+  gap: 4px;
 }
 
 .tile {
@@ -356,7 +363,7 @@ input {
   grid-template-columns: 1fr auto;
   grid-template-rows: auto 1fr auto;
   text-align: left;
-  padding: 6px;
+  padding: 5px;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
@@ -367,7 +374,7 @@ input {
 }
 
 .tile-id {
-  font-size: 9px;
+  font-size: 8px;
   color: var(--text-muted);
   font-weight: 600;
 }
@@ -375,16 +382,16 @@ input {
 .tile-top-right {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   justify-self: end;
-  font-size: 9px;
+  font-size: 8px;
   color: var(--text-mid);
 }
 
 .tile-footer {
   align-self: end;
   justify-self: end;
-  font-size: 10px;
+  font-size: 9px;
   color: #d8d8dd;
 }
 
@@ -401,12 +408,13 @@ input {
   min-width: 0;
   display: grid;
   align-content: start;
-  gap: 14px;
+  gap: 10px;
+  padding-top: 14px;
 }
 
 .deploy-panel {
   position: sticky;
-  top: 70px;
+  top: calc(var(--header-h) + 14px);
   padding: 11px;
   display: grid;
   gap: 8px;
@@ -423,8 +431,8 @@ input {
 .segmented-toggle button {
   border: 0;
   background: transparent;
-  height: 32px;
-  font-size: 13px;
+  height: 30px;
+  font-size: 12px;
 }
 
 .segmented-toggle button.active {
@@ -461,8 +469,8 @@ input {
 
 .quick-buttons button {
   border-radius: 6px;
-  height: 28px;
-  font-size: 12px;
+  height: 26px;
+  font-size: 11px;
 }
 
 .quick-buttons button:hover,
@@ -478,9 +486,9 @@ input {
 }
 
 .amount-input input {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  height: 36px;
+  height: 34px;
   text-align: right;
 }
 
@@ -494,7 +502,7 @@ input {
   border: 1px solid #32313a;
   border-radius: 5px;
   height: 22px;
-  min-width: 30px;
+  min-width: 34px;
   padding: 0 8px;
   background: var(--bg-secondary-control);
   color: var(--text-mid);
@@ -564,14 +572,15 @@ input {
 }
 
 .ore-footer {
-  height: 48px;
+  height: 42px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 18px;
-  border-top: 1px solid var(--border-soft);
+  gap: 14px;
+  padding-left: 14px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 .ore-footer a {
@@ -583,10 +592,23 @@ input {
   color: var(--text-mid);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
+  :root {
+    --header-h: 64px;
+  }
+
   .ore-header {
-    height: 64px;
-    padding: 0 18px;
+    padding: 0 10px;
+  }
+
+  .brand-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .brand-text {
+    font-size: 19px;
   }
 }
 
@@ -604,27 +626,30 @@ input {
 
 @media (max-width: 1260px) {
   .ore-content {
-    grid-template-columns: minmax(0, 1fr) var(--right-w);
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px 10px 90px;
   }
 
   .chat-rail {
-    grid-column: 1 / -1;
     position: static;
-    height: 320px;
-  }
-}
-
-@media (max-width: 960px) {
-  .ore-content {
-    grid-template-columns: 1fr;
+    height: 280px;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    background: var(--bg-elevated);
   }
 
-  .deploy-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .board-panel {
+    max-width: none;
   }
 
   .deploy-panel {
     position: static;
+  }
+}
+
+@media (max-width: 960px) {
+  .deploy-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
