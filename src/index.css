@@ -174,8 +174,7 @@ input {
 .card-base,
 .chat-rail,
 .board-panel,
-.stat-card,
-.deploy-panel {
+.stat-card {
   border-radius: 4px;
   border: 1px solid var(--border-soft);
   background: var(--bg-elevated);
@@ -287,8 +286,7 @@ input {
 }
 
 .chat-composer button,
-.quick-buttons button,
-.segmented-toggle button {
+.quick-buttons button {
   border: 1px solid #32313a;
   background: var(--bg-secondary-control);
   color: var(--text-mid);
@@ -420,23 +418,10 @@ input {
   gap: 8px;
 }
 
-.segmented-toggle {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px solid #32313a;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.segmented-toggle button {
-  border: 0;
-  background: transparent;
-  height: 30px;
+.mode-row {
+  display: flex;
+  align-items: center;
   font-size: 12px;
-}
-
-.segmented-toggle button.active {
-  background: var(--bg-secondary-control);
   color: var(--text-high);
 }
 
@@ -474,8 +459,7 @@ input {
 }
 
 .quick-buttons button:hover,
-.chat-composer button:hover,
-.segmented-toggle button:hover {
+.chat-composer button:hover {
   background: #2d2b35;
 }
 

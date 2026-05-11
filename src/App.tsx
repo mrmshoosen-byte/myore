@@ -5,7 +5,6 @@ import { Header, ChatRail, BoardPanel, RightPanel, Footer } from './components/h
 const TILE_COUNT = 25
 
 function App() {
-  const [deployMode, setDeployMode] = useState<'manual' | 'auto'>('manual')
   const [amount, setAmount] = useState('0.10')
   const [selectedTiles, setSelectedTiles] = useState<number[]>([])
 
@@ -44,8 +43,6 @@ function App() {
           allTileIds={allTileIds}
           allSelected={allSelected}
           setSelectedTiles={setSelectedTiles}
-          deployMode={deployMode}
-          setDeployMode={setDeployMode}
           amount={amount}
           setAmount={setAmount}
         />

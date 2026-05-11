@@ -3,8 +3,6 @@ interface DeployControlsProps {
   allTileIds: number[]
   allSelected: boolean
   setSelectedTiles: React.Dispatch<React.SetStateAction<number[]>>
-  deployMode: 'manual' | 'auto'
-  setDeployMode: React.Dispatch<React.SetStateAction<'manual' | 'auto'>>
   amount: string
   setAmount: React.Dispatch<React.SetStateAction<string>>
 }
@@ -14,8 +12,6 @@ export function DeployControls({
   allTileIds,
   allSelected,
   setSelectedTiles,
-  deployMode,
-  setDeployMode,
   amount,
   setAmount,
 }: DeployControlsProps) {
@@ -23,26 +19,9 @@ export function DeployControls({
   const totalAmount = (selectedTiles.length * numericAmount).toFixed(2)
 
   return (
-    <section className="deploy-panel card-base" aria-label="Deploy controls">
-      <div className="segmented-toggle" role="tablist" aria-label="Deploy mode">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={deployMode === 'manual'}
-          className={deployMode === 'manual' ? 'active' : ''}
-          onClick={() => setDeployMode('manual')}
-        >
-          Manual
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={deployMode === 'auto'}
-          className={deployMode === 'auto' ? 'active' : ''}
-          onClick={() => setDeployMode('auto')}
-        >
-          Auto
-        </button>
+    <section className="deploy-panel" aria-label="Deploy controls">
+      <div className="mode-row">
+        <span>Auto</span>
       </div>
 
       <div className="balance-row">

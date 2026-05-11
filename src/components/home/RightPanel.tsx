@@ -6,8 +6,6 @@ interface RightPanelProps {
   allTileIds: number[]
   allSelected: boolean
   setSelectedTiles: React.Dispatch<React.SetStateAction<number[]>>
-  deployMode: 'manual' | 'auto'
-  setDeployMode: React.Dispatch<React.SetStateAction<'manual' | 'auto'>>
   amount: string
   setAmount: React.Dispatch<React.SetStateAction<string>>
 }
@@ -17,8 +15,6 @@ export function RightPanel({
   allTileIds,
   allSelected,
   setSelectedTiles,
-  deployMode,
-  setDeployMode,
   amount,
   setAmount,
 }: RightPanelProps) {
@@ -30,8 +26,6 @@ export function RightPanel({
         allTileIds={allTileIds}
         allSelected={allSelected}
         setSelectedTiles={setSelectedTiles}
-        deployMode={deployMode}
-        setDeployMode={setDeployMode}
         amount={amount}
         setAmount={setAmount}
       />
