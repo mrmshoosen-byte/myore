@@ -30,7 +30,7 @@ export function Header() {
           X
         </button>
         <button type="button" className="connect-button">
-          Connect
+          Connect Wallet
         </button>
       </div>
     </header>

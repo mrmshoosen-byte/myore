@@ -1,6 +1,5 @@
 import { StatsCards } from './StatsCards'
 import { DeployControls } from './DeployControls'
-import { RewardsClaim } from './RewardsClaim'
 
 interface RightPanelProps {
   selectedTiles: number[]
@@ -36,7 +35,6 @@ export function RightPanel({
         amount={amount}
         setAmount={setAmount}
       />
-      <RewardsClaim />
     </aside>
   )
 }
